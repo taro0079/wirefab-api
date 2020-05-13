@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"math"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
