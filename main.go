@@ -64,7 +64,7 @@ func test(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/", test).Methods("POST")
+	router.HandleFunc("/api", test).Methods("POST")
 	//http.ListenAndServe(":8000", router) // for local dev
 	port := os.Getenv("PORT")
 	http.ListenAndServe(":"+port, router)
