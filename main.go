@@ -28,7 +28,7 @@ type After struct {
 }
 
 func test(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "https://fervent-neumann-c8807f.netlify.app/")
 	// jsonファイルを受け取る、そしてWire構造体にパース
 	var data Wire
 	jsondata, _ := ioutil.ReadAll(r.Body)
