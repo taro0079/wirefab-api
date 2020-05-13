@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"math"
 	"net/http"
 	"strconv"
@@ -64,5 +65,7 @@ func test(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/1", test).Methods("POST")
-	http.ListenAndServe(":8000", router)
+	//http.ListenAndServe(":8000", router) // for local dev
+	port := os.Getenv("PORT")
+	http.ListenAndServe(":"+port, router)
 }
