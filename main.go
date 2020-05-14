@@ -7,6 +7,7 @@ import (
 	"log"
 	"math"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -84,7 +85,7 @@ func main() {
 	router := mux.NewRouter()
 	router.Use(forCORS)
 	router.HandleFunc("/post", test).Methods("POST", "OPTIONS")
-	http.ListenAndServe(":8000", router) // for local dev
-	//port := os.Getenv("PORT")
-	//http.ListenAndServe(":"+port, router)
+	//http.ListenAndServe(":8000", router) // for local dev
+	port := os.Getenv("PORT")
+	http.ListenAndServe(":"+port, router)
 }
