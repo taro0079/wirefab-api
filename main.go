@@ -7,7 +7,6 @@ import (
 	"log"
 	"math"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -27,8 +26,27 @@ type After struct {
 	Fablen string
 }
 
+func forCORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+		return
+
+	})
+}
+
 func test(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://fervent-neumann-c8807f.netlify.app/")
+	//w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	//w.Header().Set("Content-Type", "application/json")
+	//w.Header().Set("Access-Control-Allow-Methods", "*")
+	//w.Header().Add("Access-Control-Allow-Headers", "Content-Type")
+
 	// jsonファイルを受け取る、そしてWire構造体にパース
 	var data Wire
 	jsondata, _ := ioutil.ReadAll(r.Body)
@@ -64,8 +82,9 @@ func test(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/api", test).Methods("POST")
-	//http.ListenAndServe(":8000", router) // for local dev
-	port := os.Getenv("PORT")
-	http.ListenAndServe(":"+port, router)
+	router.Use(forCORS)
+	router.HandleFunc("/post", test).Methods("POST", "OPTIONS")
+	http.ListenAndServe(":8000", router) // for local dev
+	//port := os.Getenv("PORT")
+	//http.ListenAndServe(":"+port, router)
 }
